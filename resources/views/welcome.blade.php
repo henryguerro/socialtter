@@ -11,7 +11,21 @@
         </ul>
     </nav>
 </div>
-
+<div class="row">
+    <form action="/messages/create" method="post">
+        <div class="form-group @if($errors->has('message')) has-danger @endif">
+            {{ csrf_field() }}
+            <input name="message" class="form-control" type="text" placeholder="Type message">
+            @if ($errors->any())
+                @foreach($errors->get('message') as $error)
+                    <div class="form-control-feedback">
+                        {{$error}}
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </form>
+</div>
 <div class="row">
     @forelse($messages as $message)
         <div class="col-md-6">
@@ -26,5 +40,11 @@
             No hay Mensajes para Mostrar
         </p>
     @endforelse
+
+    @if (count($messages))
+        <div class="mt-2 mx-auto">
+            {{ $messages->links('pagination::bootstrap-4') }}
+        </div>
+    @endif
 </div>
 @endsection
